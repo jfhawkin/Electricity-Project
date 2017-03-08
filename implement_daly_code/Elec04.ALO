@@ -1,0 +1,243 @@
+- Define data input
+
+file (name=elec.txt) d1-d3 av_Bio av_Coal av_NG av_Hydro av_LW av_SW av_LS av_SS 
+av_Nuc cost_Bio emit_Bio dist_Bio cost_Coal emit_Coal 
+dist_Coal cost_NG emit_NG dist_NG cost_Hydro emit_Hydro dist_Hydro cost_LW 
+emit_LW dist_LW cost_SW emit_SW dist_SW cost_LS emit_LS dist_LS cost_SS emit_SS 
+dist_SS cost_Nuc emit_Nuc dist_Nuc prov UorR struc no_HH age income enviro_Don 
+prem_Pay poli_Incl poli_Oth weights
+
+$TITLE Alberta Electricity Survey - Function 04
+- Standard logit with grouping by income (<50,000; 50,000-100,000; <=100,000)
+----------------------------------
+
+--- controls ---
+
+
+--- coefficients ---
+
+$ESTIMATE
+
+   11 cost_LI   F  0.0
+   12 emit_LI  F  0.0
+   13 dist_LI  F  0.0
+   21 cost_MI   F  0.0
+   22 emit_MI  F  0.0
+   23 dist_MI  F  0.0
+   31 cost_HI   F  0.0
+   32 emit_HI  F  0.0
+   33 dist_HI  F  0.0
+   01 c_Bio  F  0.0
+   02 c_Coal  T  0.0
+   03 c_NG  F  0.0
+   04 c_Hydro  F  0.0
+   05 c_LW  F  0.0
+   06 c_SW  F  0.0
+   07 c_LS  F  0.0
+   08 c_SS  F  0.0
+   09 c_Nuc  F  0.0
+
+--- transformations ---
+
+co_BioLI = cost_Bio/10*IFLE(income,2)
+co_CoalLI = cost_Coal/10*IFLE(income,2)
+co_NGLI = cost_NG/10*IFLE(income,2)
+co_HydroLI = cost_Hydro/10*IFLE(income,2)
+co_LWLI = cost_LW/10*IFLE(income,2)
+co_SWLI = cost_SW/10*IFLE(income,2)
+co_LSLI = cost_LS/10*IFLE(income,2)
+co_SSLI = cost_SS/10*IFLE(income,2)
+co_NucLI = cost_Nuc/10*IFLE(income,2)
+co_BioMI = cost_Bio/10*IFGT(income,2)*IFLE(income,4)
+co_CoalMI = cost_Coal/10*IFGT(income,2)*IFLE(income,4)
+co_NGMI = cost_NG/10*IFGT(income,2)*IFLE(income,4)
+co_HydroMI = cost_Hydro/10*IFGT(income,2)*IFLE(income,4)
+co_LWMI = cost_LW/10*IFGT(income,2)*IFLE(income,4)
+co_SWMI = cost_SW/10*IFGT(income,2)*IFLE(income,4)
+co_LSMI = cost_LS/10*IFGT(income,2)*IFLE(income,4)
+co_SSMI = cost_SS/10*IFGT(income,2)*IFLE(income,4)
+co_NucMI = cost_Nuc/10*IFGT(income,2)*IFLE(income,4)
+co_BioHI = cost_Bio/10*IFGT(income,4)*IFLE(income,8)
+co_CoalHI = cost_Coal/10*IFGT(income,4)*IFLE(income,8)
+co_NGHI = cost_NG/10*IFGT(income,4)*IFLE(income,8)
+co_HydroHI = cost_Hydro/10*IFGT(income,4)*IFLE(income,8)
+co_LWHI = cost_LW/10*IFGT(income,4)*IFLE(income,8)
+co_SWHI = cost_SW/10*IFGT(income,4)*IFLE(income,8)
+co_LSHI = cost_LS/10*IFGT(income,4)*IFLE(income,8)
+co_SSHI = cost_SS/10*IFGT(income,4)*IFLE(income,8)
+co_NucHI = cost_Nuc/10*IFGT(income,4)*IFLE(income,8)
+
+em_BioLI = emit_Bio*IFLE(income,2)
+em_CoalLI = emit_Coal*IFLE(income,2)
+em_NGLI = emit_NG*IFLE(income,2)
+em_HydroLI = emit_Hydro*IFLE(income,2)
+em_LWLI = emit_LW*IFLE(income,2)
+em_SWLI = emit_SW*IFLE(income,2)
+em_LSLI = emit_LS*IFLE(income,2)
+em_SSLI = emit_SS*IFLE(income,2)
+em_NucLI = emit_Nuc*IFLE(income,2)
+em_BioMI = emit_Bio*IFGT(income,2)*IFLE(income,4)
+em_CoalMI = emit_Coal*IFGT(income,2)*IFLE(income,4)
+em_NGMI = emit_NG*IFGT(income,2)*IFLE(income,4)
+em_HydroMI = emit_Hydro*IFGT(income,2)*IFLE(income,4)
+em_LWMI = emit_LW*IFGT(income,2)*IFLE(income,4)
+em_SWMI = emit_SW*IFGT(income,2)*IFLE(income,4)
+em_LSMI = emit_LS*IFGT(income,2)*IFLE(income,4)
+em_SSMI = emit_SS*IFGT(income,2)*IFLE(income,4)
+em_NucMI = emit_Nuc*IFGT(income,2)*IFLE(income,4)
+em_BioHI = emit_Bio*IFGT(income,4)*IFLE(income,8)
+em_CoalHI = emit_Coal*IFGT(income,4)*IFLE(income,8)
+em_NGHI = emit_NG*IFGT(income,4)*IFLE(income,8)
+em_HydroHI = emit_Hydro*IFGT(income,4)*IFLE(income,8)
+em_LWHI = emit_LW*IFGT(income,4)*IFLE(income,8)
+em_SWHI = emit_SW*IFGT(income,4)*IFLE(income,8)
+em_LSHI = emit_LS*IFGT(income,4)*IFLE(income,8)
+em_SSHI = emit_SS*IFGT(income,4)*IFLE(income,8)
+em_NucHI = emit_Nuc*IFGT(income,4)*IFLE(income,8)
+
+di_BioLI = dist_Bio/10*IFLE(income,2)
+di_CoalLI = dist_Coal/10*IFLE(income,2)
+di_NGLI = dist_NG/10*IFLE(income,2)
+di_HydroLI = dist_Hydro/10*IFLE(income,2)
+di_LWLI = dist_LW/10*IFLE(income,2)
+di_SWLI = dist_SW/10*IFLE(income,2)
+di_LSLI = dist_LS/10*IFLE(income,2)
+di_SSLI = dist_SS/10*IFLE(income,2)
+di_NucLI = dist_Nuc/10*IFLE(income,2)
+di_BioMI = dist_Bio/10*IFGT(income,2)*IFLE(income,4)
+di_CoalMI = dist_Coal/10*IFGT(income,2)*IFLE(income,4)
+di_NGMI = dist_NG/10*IFGT(income,2)*IFLE(income,4)
+di_HydroMI = dist_Hydro/10*IFGT(income,2)*IFLE(income,4)
+di_LWMI = dist_LW/10*IFGT(income,2)*IFLE(income,4)
+di_SWMI = dist_SW/10*IFGT(income,2)*IFLE(income,4)
+di_LSMI = dist_LS/10*IFGT(income,2)*IFLE(income,4)
+di_SSMI = dist_SS/10*IFGT(income,2)*IFLE(income,4)
+di_NucMI = dist_Nuc/10*IFGT(income,2)*IFLE(income,4)
+di_BioHI = dist_Bio/10*IFGT(income,4)*IFLE(income,8)
+di_CoalHI = dist_Coal/10*IFGT(income,4)*IFLE(income,8)
+di_NGHI = dist_NG/10*IFGT(income,4)*IFLE(income,8)
+di_HydroHI = dist_Hydro/10*IFGT(income,4)*IFLE(income,8)
+di_LWHI = dist_LW/10*IFGT(income,4)*IFLE(income,8)
+di_SWHI = dist_SW/10*IFGT(income,4)*IFLE(income,8)
+di_LSHI = dist_LS/10*IFGT(income,4)*IFLE(income,8)
+di_SSHI = dist_SS/10*IFGT(income,4)*IFLE(income,8)
+di_NucHI = dist_Nuc/10*IFGT(income,4)*IFLE(income,8)
+
+--- weights ---
+weight = weights
+
+--- exclusions ---
+
+$NEST root() Bio Coal NG Hydro LW SW LS SS Nuc
+CHOICE = Recode(d03 Bio,Coal,NG, Hydro, LW, SW, LS, SS, Nuc)
+
+AVAIL(Bio) = IF(av_Bio)
+AVAIL(Coal) = IF(av_Coal)
+AVAIL(NG) = IF(av_NG)
+AVAIL(Hydro) = IF(av_Hydro)
+AVAIL(LW) = IF(av_LW)
+AVAIL(SW) = IF(av_SW)
+AVAIL(LS) = IF(av_LS)
+AVAIL(SS) = IF(av_SS)
+AVAIL(Nuc) = IF(av_Nuc)
+
+--- utility functions ---
+
+U(Bio) = p11*co_BioLI
+   + p12*em_BioLI
+   + p13*di_BioLI
+   + p21*co_BioMI
+   + p22*em_BioMI
+   + p23*di_BioMI
+   + p31*co_BioHI
+   + p32*em_BioHI
+   + p33*di_BioHI
+   + p01
+
+U(Coal) = p11*co_CoalLI
+   + p12*em_CoalLI
+   + p13*di_CoalLI
+   + p21*co_CoalMI
+   + p22*em_CoalMI
+   + p23*di_CoalMI
+   + p31*co_CoalHI
+   + p32*em_CoalHI
+   + p33*di_CoalHI
+   + p02
+
+U(NG) = p11*co_NGLI
+   + p12*em_NGLI
+   + p13*di_NGLI
+   + p21*co_NGMI
+   + p22*em_NGMI
+   + p23*di_NGMI
+   + p31*co_NGHI
+   + p32*em_NGHI
+   + p33*di_NGHI
+   + p03
+
+U(Hydro) = p11*co_HydroLI
+   + p12*em_HydroLI
+   + p13*di_HydroLI
+   + p21*co_HydroMI
+   + p22*em_HydroMI
+   + p23*di_HydroMI
+   + p31*co_HydroHI
+   + p32*em_HydroHI
+   + p33*di_HydroHI
+   + p04
+
+U(LW) = p11*co_LWLI
+   + p12*em_LWLI
+   + p13*di_LWLI
+   + p21*co_LWMI
+   + p22*em_LWMI
+   + p23*di_LWMI
+   + p31*co_LWHI
+   + p32*em_LWHI
+   + p33*di_LWHI
+   + p05
+
+U(SW) = p11*co_SWLI
+   + p12*em_SWLI
+   + p13*di_SWLI
+   + p21*co_SWMI
+   + p22*em_SWMI
+   + p23*di_SWMI
+   + p31*co_SWHI
+   + p32*em_SWHI
+   + p33*di_SWHI
+   + p06
+
+U(LS) = p11*co_LSLI
+   + p12*em_LSLI
+   + p13*di_LSLI
+   + p21*co_LSMI
+   + p22*em_LSMI
+   + p23*di_LSMI
+   + p31*co_LSHI
+   + p32*em_LSHI
+   + p33*di_LSHI
+   + p07
+
+U(SS) = p11*co_SSLI
+   + p12*em_SSLI
+   + p13*di_SSLI
+   + p21*co_SSMI
+   + p22*em_SSMI
+   + p23*di_SSMI
+   + p31*co_SSHI
+   + p32*em_SSHI
+   + p33*di_SSHI
+   + p08
+
+U(Nuc) = p11*co_NucLI
+   + p12*em_NucLI
+   + p13*di_NucLI
+   + p21*co_NucMI
+   + p22*em_NucMI
+   + p23*di_NucMI
+   + p31*co_NucHI
+   + p32*em_NucHI
+   + p33*di_NucHI
+   + p09

@@ -1,0 +1,113 @@
+- Define data input
+
+file (name=elecAgg.txt) d1-d3 av_NonR av_LRe av_SRe 
+cost_NonR emit_NonR dist_NonR cost_LRe emit_LRe 
+dist_LRe cost_SRe emit_SRe dist_SRe 
+prov UorR struc no_HH age income enviro_Don 
+prem_Pay poli_Incl poli_Oth weights
+
+$TITLE Alberta Electricity Survey - Function97
+- Model version 3
+----------------------------------
+
+--- controls ---
+
+
+--- coefficients ---
+
+$ESTIMATE
+
+   11 cost  F  0.0
+   12 emit   F  0.0
+   31 d_NonR_BCL  F  0.0
+   32 d_LRe_BCL  F  0.0
+   33 d_SRe_BCL  F  0.0
+   41 d_NonR_BCH  F  0.0
+   42 d_LRe_BCH  F  0.0
+   43 d_SRe_BCH  F  0.0
+   61 d_NonR_ABL F  0.0
+   62 d_LRe_ABL  F  0.0
+   63 d_SRe_ABL  F  0.0
+   71 d_NonR_ABH  F  0.0
+   72 d_LRe_ABH  F  0.0
+   73 d_SRe_ABH  F  0.0
+   91 d_NonR_SKL F  0.0
+   92 d_LRe_SKL  F  0.0
+   93 d_SRe_SKL  F  0.0
+   101 d_NonR_SKH  F  0.0
+   102 d_LRe_SKH  F  0.0
+   103 d_SRe_SKH F  0.0
+    01 con_NonR   T 0.0
+    02 con_LRe    F 0.0
+    03 con_SRe    F 0.0
+
+--- transformations ---
+
+cosc_NonR = cost_NonR/10
+cosc_LRe = cost_LRe/10
+cosc_SRe = cost_SRe/10
+
+d_NonR = dist_NonR/10
+d_LRe = dist_LRe/10
+d_SRe = dist_SRe/10
+
+NonR_BCL = d_NonR*ifeq(prov,1)*IFLE(income,3)
+LRe_BCL  = d_LRe*ifeq(prov,1)*IFLE(income,3)
+SRe_BCL  = d_SRe*ifeq(prov,1)*IFLE(income,3)
+NonR_BCH  = d_NonR*ifeq(prov,1)*IFGT(income,3)*IFLE(income,8)
+LRe_BCH  = d_LRe*ifeq(prov,1)*IFGT(income,3)*IFLE(income,8)
+SRe_BCH  = d_SRe*ifeq(prov,1)*IFGT(income,3)*IFLE(income,8)
+NonR_ABL = d_NonR*ifeq(prov,2)*IFLE(income,3)
+LRe_ABL  = d_LRe*ifeq(prov,2)*IFLE(income,3)
+SRe_ABL  = d_SRe*ifeq(prov,2)*IFLE(income,3)
+NonR_ABH  = d_NonR*ifeq(prov,2)*IFGT(income,3)*IFLE(income,8)
+LRe_ABH  = d_LRe*ifeq(prov,2)*IFGT(income,3)*IFLE(income,8)
+SRe_ABH  = d_SRe*ifeq(prov,2)*IFGT(income,3)*IFLE(income,8)
+NonR_SKL = d_NonR*ifeq(prov,3)*IFLE(income,3)
+LRe_SKL  = d_LRe*ifeq(prov,3)*IFLE(income,3)
+SRe_SKL  = d_SRe*ifeq(prov,3)*IFLE(income,3)
+NonR_SKH  = d_NonR*ifeq(prov,3)*IFGT(income,3)*IFLE(income,8)
+LRe_SKH  = d_LRe*ifeq(prov,3)*IFGT(income,3)*IFLE(income,8)
+SRe_SKH = d_SRe*ifeq(prov,3)*IFGT(income,3)*IFLE(income,8)
+
+--- exclusions ---
+
+$NEST root() NonR LRe SRe
+CHOICE = Recode(d03 NonR LRe SRe)
+
+AVAIL(NonR) = IF(av_NonR)
+AVAIL(LRe) = IF(av_LRe)
+AVAIL(SRe) = IF(av_SRe)
+
+
+--- utility functions ---
+
+U(NonR) = p11*cosc_NonR
+   + p12*emit_NonR
+   + p31*NonR_BCL
+   + p41*NonR_BCH
+   + p61*NonR_ABL
+   + p71*NonR_ABH
+   + p91*NonR_SKL
+   + p101*NonR_SKH
+   + p01
+
+U(LRe) = p11*cosc_LRe
+   + p12*emit_LRe
+   + p32*LRe_BCL
+   + p42*LRe_BCH
+   + p62*LRe_ABL
+   + p72*LRe_ABH
+   + p92*LRe_SKL
+   + p102*LRe_SKH
+   + p02
+
+U(SRe) = p11*cosc_SRe
+   + p12*emit_SRe
+   + p33*SRe_BCL
+   + p43*SRe_BCH
+   + p63*SRe_ABL
+   + p73*SRe_ABH
+   + p93*SRe_SKL
+   + p103*SRe_SKH
+   + p03

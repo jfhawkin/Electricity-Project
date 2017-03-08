@@ -1,0 +1,308 @@
+- Define data input
+
+file (name=elec.txt) d1-d3 av_Bio av_Coal av_NG av_Hydro av_LW av_SW av_LS av_SS 
+av_Nuc cost_Bio emit_Bio dist_Bio cost_Coal emit_Coal 
+dist_Coal cost_NG emit_NG dist_NG cost_Hydro emit_Hydro dist_Hydro cost_LW 
+emit_LW dist_LW cost_SW emit_SW dist_SW cost_LS emit_LS dist_LS cost_SS emit_SS 
+dist_SS cost_Nuc emit_Nuc dist_Nuc prov UorR struc no_HH age income enviro_Don 
+prem_Pay poli_Incl poli_Oth weights
+
+$TITLE Alberta Electricity Survey - Function 061
+- Standard logit with grouping by province (BC; AB; SK) with constants by 
+province
+----------------------------------
+
+--- controls ---
+
+
+--- coefficients ---
+
+$ESTIMATE
+
+   11 cost_BC   F  0.0
+   12 emit_BC  F  0.0
+   13 dist_BC  F  0.0
+   21 cost_AB   F  0.0
+   22 emit_AB  F  0.0
+   23 dist_AB  F  0.0
+   31 cost_SK   F  0.0
+   32 emit_SK  F  0.0
+   33 dist_SK  F  0.0
+   100 c_BioBC  F  0.0
+   200 c_CoalBC  T  0.0
+   300 c_NGBC  F  0.0
+   400 c_HydroBC  F  0.0
+   500 c_LWBC  F  0.0
+   600 c_SWBC  F  0.0
+   700 c_LSBC  F  0.0
+   800 c_SSBC  F  0.0
+   900 c_NucBC  F  0.0
+   110 c_BioAB  F  0.0
+   210 c_CoalAB  T  0.0
+   310 c_NGAB  F  0.0
+   410 c_HydroAB  F  0.0
+   510 c_LWAB  F  0.0
+   610 c_SWAB  F  0.0
+   710 c_LSAB  F  0.0
+   810 c_SSAB  F  0.0
+   910 c_NucAB  F  0.0
+   120 c_BioSK  F  0.0
+   220 c_CoalSK  T  0.0
+   320 c_NGSK  F  0.0
+   420 c_HydroSK  F  0.0
+   520 c_LWSK  F  0.0
+   620 c_SWSK  F  0.0
+   720 c_LSSK  F  0.0
+   820 c_SSSK  F  0.0
+   920 c_NucSK  F  0.0
+
+--- transformations ---
+
+co_BioBC = cost_Bio/10*IFEQ(prov,1)
+co_CoalBC = cost_Coal/10*IFEQ(prov,1)
+co_NGBC = cost_NG/10*IFEQ(prov,1)
+co_HydroBC = cost_Hydro/10*IFEQ(prov,1)
+co_LWBC = cost_LW/10*IFEQ(prov,1)
+co_SWBC = cost_SW/10*IFEQ(prov,1)
+co_LSBC = cost_LS/10*IFEQ(prov,1)
+co_SSBC = cost_SS/10*IFEQ(prov,1)
+co_NucBC = cost_Nuc/10*IFEQ(prov,1)
+co_BioAB = cost_Bio/10*IFEQ(prov,2)
+co_CoalAB = cost_Coal/10*IFEQ(prov,2)
+co_NGAB = cost_NG/10*IFEQ(prov,2)
+co_HydroAB = cost_Hydro/10*IFEQ(prov,2)
+co_LWAB = cost_LW/10*IFEQ(prov,2)
+co_SWAB = cost_SW/10*IFEQ(prov,2)
+co_LSKB = cost_LS/10*IFEQ(prov,2)
+co_SSKB = cost_SS/10*IFEQ(prov,2)
+co_NucAB = cost_Nuc/10*IFEQ(prov,2)
+co_BioSK = cost_Bio/10*IFEQ(prov,3)
+co_CoalSK = cost_Coal/10*IFEQ(prov,3)
+co_NGSK = cost_NG/10*IFEQ(prov,3)
+co_HydroSK = cost_Hydro/10*IFEQ(prov,3)
+co_LWSK = cost_LW/10*IFEQ(prov,3)
+co_SWSK = cost_SW/10*IFEQ(prov,3)
+co_LSSK = cost_LS/10*IFEQ(prov,3)
+co_SSSK = cost_SS/10*IFEQ(prov,3)
+co_NucSK = cost_Nuc/10*IFEQ(prov,3)
+
+em_BioBC = emit_Bio*IFEQ(prov,1)
+em_CoalBC = emit_Coal*IFEQ(prov,1)
+em_NGBC = emit_NG*IFEQ(prov,1)
+em_HydroBC = emit_Hydro*IFEQ(prov,1)
+em_LWBC = emit_LW*IFEQ(prov,1)
+em_SWBC = emit_SW*IFEQ(prov,1)
+em_LSBC = emit_LS*IFEQ(prov,1)
+em_SSBC = emit_SS*IFEQ(prov,1)
+em_NucBC = emit_Nuc*IFEQ(prov,1)
+em_BioAB = emit_Bio*IFEQ(prov,2)
+em_CoalAB = emit_Coal*IFEQ(prov,2)
+em_NGAB = emit_NG*IFEQ(prov,2)
+em_HydroAB = emit_Hydro*IFEQ(prov,2)
+em_LWAB = emit_LW*IFEQ(prov,2)
+em_SWAB = emit_SW*IFEQ(prov,2)
+em_LSKB = emit_LS*IFEQ(prov,2)
+em_SSKB = emit_SS*IFEQ(prov,2)
+em_NucAB = emit_Nuc*IFEQ(prov,2)
+em_BioSK = emit_Bio*IFEQ(prov,3)
+em_CoalSK = emit_Coal*IFEQ(prov,3)
+em_NGSK = emit_NG*IFEQ(prov,3)
+em_HydroSK = emit_Hydro*IFEQ(prov,3)
+em_LWSK = emit_LW*IFEQ(prov,3)
+em_SWSK = emit_SW*IFEQ(prov,3)
+em_LSSK = emit_LS*IFEQ(prov,3)
+em_SSSK = emit_SS*IFEQ(prov,3)
+em_NucSK = emit_Nuc*IFEQ(prov,3)
+
+di_BioBC = dist_Bio/10*IFEQ(prov,1)
+di_CoalBC = dist_Coal/10*IFEQ(prov,1)
+di_NGBC = dist_NG/10*IFEQ(prov,1)
+di_HydroBC = dist_Hydro/10*IFEQ(prov,1)
+di_LWBC = dist_LW/10*IFEQ(prov,1)
+di_SWBC = dist_SW/10*IFEQ(prov,1)
+di_LSBC = dist_LS/10*IFEQ(prov,1)
+di_SSBC = dist_SS/10*IFEQ(prov,1)
+di_NucBC = dist_Nuc/10*IFEQ(prov,1)
+di_BioAB = dist_Bio/10*IFEQ(prov,2)
+di_CoalAB = dist_Coal/10*IFEQ(prov,2)
+di_NGAB = dist_NG/10*IFEQ(prov,2)
+di_HydroAB = dist_Hydro/10*IFEQ(prov,2)
+di_LWAB = dist_LW/10*IFEQ(prov,2)
+di_SWAB = dist_SW/10*IFEQ(prov,2)
+di_LSKB = dist_LS/10*IFEQ(prov,2)
+di_SSKB = dist_SS/10*IFEQ(prov,2)
+di_NucAB = dist_Nuc/10*IFEQ(prov,2)
+di_BioSK = dist_Bio/10*IFEQ(prov,3)
+di_CoalSK = dist_Coal/10*IFEQ(prov,3)
+di_NGSK = dist_NG/10*IFEQ(prov,3)
+di_HydroSK = dist_Hydro/10*IFEQ(prov,3)
+di_LWSK = dist_LW/10*IFEQ(prov,3)
+di_SWSK = dist_SW/10*IFEQ(prov,3)
+di_LSSK = dist_LS/10*IFEQ(prov,3)
+di_SSSK = dist_SS/10*IFEQ(prov,3)
+di_NucSK = dist_Nuc/10*IFEQ(prov,3)
+
+c_BioBC1 = av_Bio*IFEQ(prov,1)
+c_CoalBC1 = av_Coal*IFEQ(prov,1)
+c_NGBC1 = av_NG*IFEQ(prov,1)
+c_HydroBC1 = av_Hydro*IFEQ(prov,1)
+c_LWBC1 = av_LW*IFEQ(prov,1)
+c_SWBC1 = av_SW*IFEQ(prov,1)
+c_LSBC1 = av_LS*IFEQ(prov,1)
+c_SSBC1 = av_SS*IFEQ(prov,1)
+c_NucBC1 = av_Nuc*IFEQ(prov,1)
+c_BioAB1 = av_Bio*IFEQ(prov,2)
+c_CoalAB1 = av_Coal*IFEQ(prov,2)
+c_NGAB1 = av_NG*IFEQ(prov,2)
+c_HydroAB1 = av_Hydro/10*IFEQ(prov,2)
+c_LWAB1 = av_LW*IFEQ(prov,2)
+c_SWAB1 = av_SW*IFEQ(prov,2)
+c_LSAB1 = av_LS*IFEQ(prov,2)
+c_SSAB1 = av_SS*IFEQ(prov,2)
+c_NucAB1 = av_Nuc*IFEQ(prov,2)
+c_BioSK1 = av_Bio*IFEQ(prov,3)
+c_CoalSK1 = av_Coal*IFEQ(prov,3)
+c_NGSK1 = av_NG*IFEQ(prov,3)
+c_HydroSK1 = av_Hydro*IFEQ(prov,3)
+c_LWSK1 = av_LW*IFEQ(prov,3)
+c_SWSK1 = av_SW*IFEQ(prov,3)
+c_LSSK1 = av_LS*IFEQ(prov,3)
+c_SSSK1 = av_SS*IFEQ(prov,3)
+c_NucSK1 = av_Nuc*IFEQ(prov,3)
+
+--- weights ---
+weight = weights
+
+--- exclusions ---
+
+$NEST root() Bio Coal NG Hydro LW SW LS SS Nuc
+CHOICE = Recode(d03 Bio,Coal,NG, Hydro, LW, SW, LS, SS, Nuc)
+
+AVAIL(Bio) = IF(av_Bio)
+AVAIL(Coal) = IF(av_Coal)
+AVAIL(NG) = IF(av_NG)
+AVAIL(Hydro) = IF(av_Hydro)
+AVAIL(LW) = IF(av_LW)
+AVAIL(SW) = IF(av_SW)
+AVAIL(LS) = IF(av_LS)
+AVAIL(SS) = IF(av_SS)
+AVAIL(Nuc) = IF(av_Nuc)
+
+--- utility functions ---
+
+U(Bio) = p11*co_BioBC
+   + p12*em_BioBC
+   + p13*di_BioBC
+   + p21*co_BioAB
+   + p22*em_BioAB
+   + p23*di_BioAB
+   + p31*co_BioSK
+   + p32*em_BioSK
+   + p33*di_BioSK
+   + p100*c_BioBC1
+   + p110*c_BioAB1
+   +p120*c_BioSK1
+
+U(Coal) = p11*co_CoalBC
+   + p12*em_CoalBC
+   + p13*di_CoalBC
+   + p21*co_CoalAB
+   + p22*em_CoalAB
+   + p23*di_CoalAB
+   + p31*co_CoalSK
+   + p32*em_CoalSK
+   + p33*di_CoalSK
+   + p200*c_CoalBC1
+   + p210*c_CoalAB1
+   + p220*c_CoalSK1
+
+U(NG) = p11*co_NGBC
+   + p12*em_NGBC
+   + p13*di_NGBC
+   + p21*co_NGAB
+   + p22*em_NGAB
+   + p23*di_NGAB
+   + p31*co_NGSK
+   + p32*em_NGSK
+   + p33*di_NGSK
+   + p300*c_NGBC1
+   + p310*c_NGAB1
+   + p320*c_NGSK1
+
+U(Hydro) = p11*co_HydroBC
+   + p12*em_HydroBC
+   + p13*di_HydroBC
+   + p21*co_HydroAB
+   + p22*em_HydroAB
+   + p23*di_HydroAB
+   + p31*co_HydroSK
+   + p32*em_HydroSK
+   + p33*di_HydroSK
+   + p400*c_HydroBC1
+   + p410*c_HydroAB1
+   + p420*c_HydroSK1
+
+U(LW) = p11*co_LWBC
+   + p12*em_LWBC
+   + p13*di_LWBC
+   + p21*co_LWAB
+   + p22*em_LWAB
+   + p23*di_LWAB
+   + p31*co_LWSK
+   + p32*em_LWSK
+   + p33*di_LWSK
+   + p500*c_LWBC1
+   + p510*c_LWAB1
+   + p520*c_LWSK1
+
+U(SW) = p11*co_SWBC
+   + p12*em_SWBC
+   + p13*di_SWBC
+   + p21*co_SWAB
+   + p22*em_SWAB
+   + p23*di_SWAB
+   + p31*co_SWSK
+   + p32*em_SWSK
+   + p33*di_SWSK
+   + p600*c_SWBC1
+   + p610*c_SWAB1
+   + p620*c_SWSK1
+        
+U(LS) = p11*co_LSBC
+   + p12*em_LSBC
+   + p13*di_LSBC
+   + p21*co_LSKB
+   + p22*em_LSKB
+   + p23*di_LSKB
+   + p31*co_LSSK
+   + p32*em_LSSK
+   + p33*di_LSSK
+   + p700*c_LSBC1
+   + p710*c_LSAB1
+   + p720*c_LSSK1
+
+U(SS) = p11*co_SSBC
+   + p12*em_SSBC
+   + p13*di_SSBC
+   + p21*co_SSKB
+   + p22*em_SSKB
+   + p23*di_SSKB
+   + p31*co_SSSK
+   + p32*em_SSSK
+   + p33*di_SSSK
+   + p800*c_SSBC1
+   + p810*c_SSAB1
+   + p820*c_SSSK1
+
+U(Nuc) = p11*co_NucBC
+   + p12*em_NucBC
+   + p13*di_NucBC
+   + p21*co_NucAB
+   + p22*em_NucAB
+   + p23*di_NucAB
+   + p31*co_NucSK
+   + p32*em_NucSK
+   + p33*di_NucSK
+   + p900*c_NucBC1
+   + p910*c_NucAB1
+   + p920*c_NucSK1

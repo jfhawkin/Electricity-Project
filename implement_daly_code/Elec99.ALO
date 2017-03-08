@@ -1,0 +1,350 @@
+- Define data input
+
+file (name=elec.txt) d1-d3 av_Bio av_Coal av_NG av_Hydro av_LW av_SW av_LS av_SS 
+av_Nuc cost_Bio emit_Bio dist_Bio cost_Coal emit_Coal 
+dist_Coal cost_NG emit_NG dist_NG cost_Hydro emit_Hydro dist_Hydro cost_LW 
+emit_LW dist_LW cost_SW emit_SW dist_SW cost_LS emit_LS dist_LS cost_SS emit_SS 
+dist_SS cost_Nuc emit_Nuc dist_Nuc prov UorR struc no_HH age income enviro_Don 
+prem_Pay poli_Incl poli_Oth weights
+
+$TITLE Alberta Electricity Survey - Function99
+- Model version 2
+----------------------------------
+
+--- controls ---
+
+
+--- coefficients ---
+
+$ESTIMATE
+
+   11 cost  F  0.0
+   12 emit   F  0.0
+   21 d-Bio  F  0.0
+   22 d-Coal   F  0.0
+   23 d-NG   F  0.0
+   24 d-Hydro   F  0.0
+   25 d-LW  F  0.0
+   26 d-SW  F  0.0
+   27 d-LS  F  0.0
+   28 d-SS  F  0.0
+   29 d-Nuc   F  0.0
+   31 c_Bio-BCL  F  0.0
+   32 c_Coal-BCL  T  0.0
+   33 c_NG-BCL  F  0.0
+   34 c_Hydro-BCL  F  0.0
+   35 c_LW-BCL  F  0.0
+   36 c_SW-BCL  F  0.0
+   37 c_LS-BCL  F  0.0
+   38 c_SS-BCL  F  0.0
+   39 c_Nuc-BCL  F  0.0
+   41 c_Bio-BCM  F  0.0
+   42 c_Coal-BCM  T  0.0
+   43 c_NG-BCM  F  0.0
+   44 c_Hydro-BCM  F  0.0
+   45 c_LW-BCM  F  0.0
+   46 c_SW-BCM  F  0.0
+   47 c_LS-BCM  F  0.0
+   48 c_SS-BCM  F  0.0
+   49 c_Nuc-BCM  F  0.0
+   51 c_Bio-BCH  F  0.0
+   52 c_Coal-BCH  T  0.0
+   53 c_NG-BCH  F  0.0
+   54 c_Hydro-BCH  F  0.0
+   55 c_LW-BCH  F  0.0
+   56 c_SW-BCH  F  0.0
+   57 c_LS-BCH  F  0.0
+   58 c_SS-BCH  F  0.0
+   59 c_Nuc-BCH  F  0.0
+   61 c_Bio-ABL F  0.0
+   62 c_Coal-ABL  T  0.0
+   63 c_NG-ABL  F  0.0
+   64 c_Hydro-ABL  F  0.0
+   65 c_LW-ABL  F  0.0
+   66 c_SW-ABL  F  0.0
+   67 c_LS-ABL  F  0.0
+   68 c_SS-ABL  F  0.0
+   69 c_Nuc-ABL  F  0.0
+   71 c_Bio-ABM  F  0.0
+   72 c_CoalABM  T  0.0
+   73 c_NG-ABM  F  0.0
+   74 c_Hydro-ABM  F  0.0
+   75 c_LW-ABM  F  0.0
+   76 c_SW-ABM  F  0.0
+   77 c_LS-ABM  F  0.0
+   78 c_SS-ABM  F  0.0
+   79 c_NucABM  F  0.0
+   81 c_Bio-ABH F  0.0
+   82 c_Coal-ABH  T  0.0
+   83 c_NG-ABH F  0.0
+   84 c_Hydro-ABH  F  0.0
+   85 c_LW-ABH  F  0.0
+   86 c_SW-ABH  F  0.0
+   87 c_LS-ABH  F  0.0
+   88 c_SS-ABH  F  0.0
+   89 c_Nuc-ABH  F  0.0
+   91 c_Bio-SKL F  0.0
+   92 c_Coal-SKL  T  0.0
+   93 c_NG-SKL  F  0.0
+   94 c_Hydro-SKL  F  0.0
+   95 c_LW-SKL  F  0.0
+   96 c_SW-SKL  F  0.0
+   97 c_LS-SKL  F  0.0
+   98 c_SS-SKL  F  0.0
+   99 c_Nuc-SKL  F  0.0
+   101 c_Bio-SKM  F  0.0
+   102 c_Coal-SKM  T  0.0
+   103 c_NG-SKM F  0.0
+   104 c_Hydro-SKM  F  0.0
+   105 c_LW-SKM  F  0.0
+   106 c_SW-SKM  F  0.0
+   107 c_LS-SKM  F  0.0
+   108 c_SS-SKM  F  0.0
+   109 c_Nuc-SKM  F  0.0
+   111 c_Bio-SKH  F  0.0
+   112 c_Coal-SKH  T  0.0
+   113 c_NG-SKH  F  0.0
+   114 c_Hydro-SKH  F  0.0
+   115 c_LW-SKH  F  0.0
+   116 c_SW-SKH  F  0.0
+   117 c_LS-SKH  F  0.0
+   118 c_SS-SKH  F  0.0
+   119 c_Nuc-SKH  F  0.0
+
+--- transformations ---
+
+cosc_Bio = cost_Bio/10
+cosc_Coal = cost_Coal/10
+cosc_NG = cost_NG/10
+cosc_Hydro = cost_Hydro/10
+cosc_LW = cost_LW/10
+cosc_SW = cost_SW/10
+cosc_LS = cost_LS/10
+cosc_SS = cost_SS/10
+cosc_Nuc = cost_Nuc/10
+
+disc_Bio = dist_Bio/10
+disc_Coal = dist_Coal/10
+disc_NG = dist_NG/10
+disc_Hydro = dist_Hydro/10
+disc_LW = dist_LW/10
+disc_SW = dist_SW/10
+disc_LS = dist_LS/10
+disc_SS = dist_SS/10
+disc_Nuc = dist_Nuc/10
+
+Bio-BCL = av_Bio*ifeq(prov,1)*IFLE(income,2)
+Coal-BCL  = av_Coal*ifeq(prov,1)*IFLE(income,2)
+NG-BCL  = av_NG*ifeq(prov,1)*IFLE(income,2)
+Hydro-BCL  = av_Hydro*ifeq(prov,1)*IFLE(income,2)
+LW-BCL  = av_LW*ifeq(prov,1)*IFLE(income,2)
+SW-BCL  = av_SW*ifeq(prov,1)*IFLE(income,2)
+LS-BCL  = av_LS*ifeq(prov,1)*IFLE(income,2)
+SS-BCL  = av_SS*ifeq(prov,1)*IFLE(income,2)
+Nuc-BCL  = av_Nuc*ifeq(prov,1)*IFLE(income,2)
+Bio-BCM  = av_Bio*ifeq(prov,1)*IFGT(income,2)*IFLE(income,4)
+Coal-BCM  = av_Coal*ifeq(prov,1)*IFGT(income,2)*IFLE(income,4)
+NG-BCM  = av_NG*ifeq(prov,1)*IFGT(income,2)*IFLE(income,4)
+Hydro-BCM  = av_Hydro*ifeq(prov,1)*IFGT(income,2)*IFLE(income,4)
+LW-BCM  = av_LW*ifeq(prov,1)*IFGT(income,2)*IFLE(income,4)
+SW-BCM  = av_SW*ifeq(prov,1)*IFGT(income,2)*IFLE(income,4)
+LS-BCM  = av_LS*ifeq(prov,1)*IFGT(income,2)*IFLE(income,4)
+SS-BCM  = av_SS*ifeq(prov,1)*IFGT(income,2)*IFLE(income,4)
+Nuc-BCM  = av_Nuc*ifeq(prov,1)*IFGT(income,2)*IFLE(income,4)
+Bio-BCH  = av_Bio*ifeq(prov,1)*IFGT(income,4)*IFLE(income,8)
+Coal-BCH  = av_Coal*ifeq(prov,1)*IFGT(income,4)*IFLE(income,8)
+NG-BCH  = av_NG*ifeq(prov,1)*IFGT(income,4)*IFLE(income,8)
+Hydro-BCH  = av_Hydro*ifeq(prov,1)*IFGT(income,4)*IFLE(income,8)
+LW-BCH  = av_LW*ifeq(prov,1)*IFGT(income,4)*IFLE(income,8)
+SW-BCH  = av_SW*ifeq(prov,1)*IFGT(income,4)*IFLE(income,8)
+LS-BCH  = av_LS*ifeq(prov,1)*IFGT(income,4)*IFLE(income,8)
+SS-BCH  = av_SS*ifeq(prov,1)*IFGT(income,4)*IFLE(income,8)
+Nuc-BCH  = av_Nuc*ifeq(prov,1)*IFGT(income,4)*IFLE(income,8)
+Bio-ABL = av_Bio*ifeq(prov,2)*IFLE(income,2)
+Coal-ABL  = av_Coal*ifeq(prov,2)*IFLE(income,2)
+NG-ABL  = av_NG*ifeq(prov,2)*IFLE(income,2)
+Hydro-ABL  = av_Hydro*ifeq(prov,2)*IFLE(income,2)
+LW-ABL  = av_LW*ifeq(prov,2)*IFLE(income,2)
+SW-ABL  = av_SW*ifeq(prov,2)*IFLE(income,2)
+LS-ABL  = av_LS*ifeq(prov,2)*IFLE(income,2)
+SS-ABL  = av_SS*ifeq(prov,2)*IFLE(income,2)
+Nuc-ABL  = av_Nuc*ifeq(prov,2)*IFLE(income,2)
+Bio-ABM  = av_Bio*ifeq(prov,2)*IFGT(income,2)*IFLE(income,4)
+CoalABM  = av_Coal*ifeq(prov,2)*IFGT(income,2)*IFLE(income,4)
+NG-ABM  = av_NG*ifeq(prov,2)*IFGT(income,2)*IFLE(income,4)
+Hydro-ABM  = av_Hydro*ifeq(prov,2)*IFGT(income,2)*IFLE(income,4)
+LW-ABM  = av_LW*ifeq(prov,2)*IFGT(income,2)*IFLE(income,4)
+SW-ABM  = av_SW*ifeq(prov,2)*IFGT(income,2)*IFLE(income,4)
+LS-ABM  = avLS*ifeq(prov,2)*IFGT(income,2)*IFLE(income,4)
+SS-ABM  = av_SS*ifeq(prov,2)*IFGT(income,2)*IFLE(income,4)
+NucABM  = av_Nuc*ifeq(prov,2)*IFGT(income,2)*IFLE(income,4)
+Bio-ABH = av_Bio*ifeq(prov,2)*IFGT(income,4)*IFLE(income,8)
+Coal-ABH  = av_Coal*ifeq(prov,2)*IFGT(income,4)*IFLE(income,8)
+NG-ABH = av_NG*ifeq(prov,2)*IFGT(income,4)*IFLE(income,8)
+Hydro-ABH  = av_Hydro*ifeq(prov,2)*IFGT(income,4)*IFLE(income,8)
+LW-ABH  = av_LW*ifeq(prov,2)*IFGT(income,4)*IFLE(income,8)
+SW-ABH  = av_SW*ifeq(prov,2)*IFGT(income,4)*IFLE(income,8)
+LS-ABH  = av_LS*ifeq(prov,2)*IFGT(income,4)*IFLE(income,8)
+SS-ABH  = av_SS*ifeq(prov,2)*IFGT(income,4)*IFLE(income,8)
+Nuc-ABH  = av_Nuc*ifeq(prov,2)*IFGT(income,4)*IFLE(income,8)
+Bio-SKL = av_Bio*ifeq(prov,3)*IFLE(income,2)
+Coal-SKL  = av_Coal*ifeq(prov,3)*IFLE(income,2)
+NG-SKL  = av_NG*ifeq(prov,3)*IFLE(income,2)
+Hydro-SKL  = av_Hydro*ifeq(prov,3)*IFLE(income,2)
+LW-SKL  = av_LW*ifeq(prov,3)*IFLE(income,2)
+SW-SKL  = av_SW*ifeq(prov,3)*IFLE(income,2)
+LS-SKL  = av_LS*ifeq(prov,3)*IFLE(income,2)
+SS-SKL  = av_SS*ifeq(prov,3)*IFLE(income,2)
+Nuc-SKL  = av_Nuc*ifeq(prov,3)*IFLE(income,2)
+Bio-SKM  = av_Bio*ifeq(prov,3)*IFGT(income,2)*IFLE(income,4)
+Coal-SKM  = av_Coal*ifeq(prov,3)*IFGT(income,2)*IFLE(income,4)
+NG-SKM = av_NG*ifeq(prov,3)*IFGT(income,2)*IFLE(income,4)
+Hydro-SKM  = av_Hydro*ifeq(prov,3)*IFGT(income,2)*IFLE(income,4)
+LW-SKM  = av_LW*ifeq(prov,3)*IFGT(income,2)*IFLE(income,4)
+SW-SKM  = av_SW*ifeq(prov,3)*IFGT(income,2)*IFLE(income,4)
+LS-SKM  = av_LS*ifeq(prov,3)*IFGT(income,2)*IFLE(income,4)
+SS-SKM  = av_SS*ifeq(prov,3)*IFGT(income,2)*IFLE(income,4)
+Nuc-SKM  = av_Nuc*ifeq(prov,3)*IFGT(income,2)*IFLE(income,4)
+Bio-SKH  = av_Bio*ifeq(prov,3)*IFGT(income,4)*IFLE(income,8)
+Coal-SKH  = av_Coal*ifeq(prov,3)*IFGT(income,4)*IFLE(income,8)
+NG-SKH  = av_NG*ifeq(prov,3)*IFGT(income,4)*IFLE(income,8)
+Hydro-SKH  = av_Hydro*ifeq(prov,3)*IFGT(income,4)*IFLE(income,8)
+LW-SKH  = av_LW*ifeq(prov,3)*IFGT(income,4)*IFLE(income,8)
+SW-SKH  = av_SW*ifeq(prov,3)*IFGT(income,4)*IFLE(income,8)
+LS-SKH  = av_LS*ifeq(prov,3)*IFGT(income,4)*IFLE(income,8)
+SS-SKH  = av_SS*ifeq(prov,3)*IFGT(income,4)*IFLE(income,8)
+Nuc-SKH  = av_Nuc*ifeq(prov,3)*IFGT(income,4)*IFLE(income,8)
+
+--- exclusions ---
+
+$NEST root() Bio Coal NG Hydro LW SW LS SS Nuc
+CHOICE = Recode(d03 Bio,Coal,NG, Hydro, LW, SW, LS, SS, Nuc)
+
+AVAIL(Bio) = IF(av_Bio)
+AVAIL(Coal) = IF(av_Coal)
+AVAIL(NG) = IF(av_NG)
+AVAIL(Hydro) = IF(av_Hydro)
+AVAIL(LW) = IF(av_LW)
+AVAIL(SW) = IF(av_SW)
+AVAIL(LS) = IF(av_LS)
+AVAIL(SS) = IF(av_SS)
+AVAIL(Nuc) = IF(av_Nuc)
+
+--- utility functions ---
+
+U(Bio) = p11*cosc_Bio
+   + p12*emit_Bio
+   + p31*Bio-BCL
+   + p41*Bio-BCM
+   + p51*Bio-BCH
+   + p61*Bio-AVL
+   + p71*Bio-AVM
+   + p81*Bio-ABH
+   + p91*Bio-SKL
+   + p101*Bio-SKM
+   + p111*Bio-SKH
+   + p21*disc_Bio 
+
+U(Coal) = p11*cosc_Coal
+   + p12*emit_Coal
+   + p32*Coal-BCL
+   + p42*Coal-BCM
+   + p52*Coal-BCH
+   + p62*Coal-AVL
+   + p72*Coal-AVM
+   + p82*Coal-ABH
+   + p92*Coal-SKL
+   + p102*Coal-SKM
+   + p112*Coal-SKH
+   + p22*disc_Coal 
+
+U(NG) = p11*cosc_NG
+   + p12*emit_NG
+   + p33*NG-BCL
+   + p43*NG-BCM
+   + p53*NG-BCH
+   + p63*NG-AVL
+   + p73*NG-AVM
+   + p83*NG-ABH
+   + p93*NG-SKL
+   + p103*NG-SKM
+   + p113*NG-SKH
+   + p23*disc_NG 
+
+U(Hydro) = p11*cosc_Hydro
+   + p12*emit_Hydro
+   + p34*Hydr-BCL
+   + p44*Hydro-BCM
+   + p54*Hydro-BCH
+   + p64*Hydro-AVL
+   + p74*Hydro-AVM
+   + p84*Hydro-ABH
+   + p94*Hydro-SKL
+   + p104*Hydro-SKM
+   + p114*Hydro-SKH
+   + p24*disc_Hydro 
+
+U(LW) = p11*cosc_LW
+   + p12*emit_LW
+   + p35*LW-BCL
+   + p45*LW-BCM
+   + p55*LW-BCH
+   + p65*LW-AVL
+   + p75*LW-AVM
+   + p85*LW-ABH
+   + p95*LW-SKL
+   + p105*LW-SKM
+   + p115*LW-SKH
+   + p25*disc_LW 
+
+U(SW) = p11*cosc_SW
+   + p12*emit_SW
+   + p36*SW-BCL
+   + p46*SW-BCM
+   + p56*SW-BCH
+   + p66*SW-AVL
+   + p76*SW-AVM
+   + p86*SW-ABH
+   + p96*SW-SKL
+   + p106*SW-SKM
+   + p116*SW-SKH
+   + p26*disc_SW 
+
+U(LS) = p11*cosc_LS
+   + p12*emit_LS
+   + p37*LS-BCL
+   + p47*LS-BCM
+   + p57*LS-BCH
+   + p67*LS-AVL
+   + p77*LS-AVM
+   + p87*LS-ABH
+   + p97*Ls-SKL
+   + p107*LS-SKM
+   + p117*LS-SKH
+   + p27*disc_LS 
+
+U(SS) = p11*cosc_SS
+   + p12*emit_SS
+   + p38*SS-BCL
+   + p48*SS-BCM
+   + p58*SS-BCH
+   + p68*SS-AVL
+   + p78*SS-AVM
+   + p88*SS-ABH
+   + p98*SS-SKL
+   + p108*SS-SKM
+   + p118*SS-SKH
+   + p28*disc_SS 
+
+U(Nuc) = p11*cosc_Nuc
+   + p12*emit_Nuc
+   + p39*Nuc-BCL
+   + p49*Nuc-BCM
+   + p59*Nuc-BCH
+   + p69*Nuc-AVL
+   + p79*Nuc-AVM
+   + p89*Nuc-ABH
+   + p99*Nuc-SKL
+   + p109*Nuc-SKM
+   + p119*Nuc-SKH
+   + p29*disc_Nuc

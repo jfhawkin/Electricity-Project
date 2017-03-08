@@ -1,0 +1,184 @@
+- Define data input
+
+file (name=elec.txt) d1-d3 av_Bio av_Coal av_NG av_Hydro av_LW av_SW av_LS av_SS 
+av_Nuc cost_Bio emit_Bio dist_Bio cost_Coal emit_Coal 
+dist_Coal cost_NG emit_NG dist_NG cost_Hydro emit_Hydro dist_Hydro cost_LW 
+emit_LW dist_LW cost_SW emit_SW dist_SW cost_LS emit_LS dist_LS cost_SS emit_SS 
+dist_SS cost_Nuc emit_Nuc dist_Nuc prov UorR struc no_HH age income enviro_Don 
+prem_Pay poli_Incl poli_Oth weights
+
+$TITLE Alberta Electricity Survey - Function 062
+- Standard logit with grouping by province (BC; AB; SK) with constants by 
+province (2)
+----------------------------------
+
+--- controls ---
+
+
+--- coefficients ---
+
+$ESTIMATE
+
+   11 cost   F  0.0
+   12 emit  F  0.0
+   13 dist  F  0.0
+   100 c_BioBC  T  0.0
+   200 c_CoalBC  F  0.0
+   300 c_NGBC  F  0.0
+   400 c_HydroBC  F  0.0
+   500 c_LWBC  F  0.0
+   600 c_SWBC  F  0.0
+   700 c_LSBC  F  0.0
+   800 c_SSBC  F  0.0
+   900 c_NucBC  F  0.0
+   110 c_BioAB  T  0.0
+   210 c_CoalAB  F  0.0
+   310 c_NGAB  F  0.0
+   410 c_HydroAB  F  0.0
+   510 c_LWAB  F  0.0
+   610 c_SWAB  F  0.0
+   710 c_LSAB  F  0.0
+   810 c_SSAB  F  0.0
+   910 c_NucAB  F  0.0
+   120 c_BioSK  T  0.0
+   220 c_CoalSK  F  0.0
+   320 c_NGSK  F  0.0
+   420 c_HydroSK  F  0.0
+   520 c_LWSK  F  0.0
+   620 c_SWSK  F  0.0
+   720 c_LSSK  F  0.0
+   820 c_SSSK  F  0.0
+   920 c_NucSK  F  0.0
+
+--- transformations ---
+
+co_Bio = cost_Bio/10
+co_Coal = cost_Coal/10
+co_NG = cost_NG/10
+co_Hydro = cost_Hydro/10
+co_LW = cost_LW/10
+co_SW = cost_SW/10
+co_LS = cost_LS/10
+co_SS = cost_SS/10
+co_Nuc = cost_Nuc/10
+
+di_Bio = dist_Bio/10
+di_Coal = dist_Coal/10
+di_NG = dist_NG/10
+di_Hydro = dist_Hydro/10
+di_LW = dist_LW/10
+di_SW = dist_SW/10
+di_LS = dist_LS/10
+di_SS = dist_SS/10
+di_Nuc = dist_Nuc/10
+
+c_BioBC1 = av_Bio*IFEQ(prov,1)
+c_CoalBC1 = av_Coal*IFEQ(prov,1)
+c_NGBC1 = av_NG*IFEQ(prov,1)
+c_HydroBC1 = av_Hydro*IFEQ(prov,1)
+c_LWBC1 = av_LW*IFEQ(prov,1)
+c_SWBC1 = av_SW*IFEQ(prov,1)
+c_LSBC1 = av_LS*IFEQ(prov,1)
+c_SSBC1 = av_SS*IFEQ(prov,1)
+c_NucBC1 = av_Nuc*IFEQ(prov,1)
+c_BioAB1 = av_Bio*IFEQ(prov,2)
+c_CoalAB1 = av_Coal*IFEQ(prov,2)
+c_NGAB1 = av_NG*IFEQ(prov,2)
+c_HydroAB1 = av_Hydro/10*IFEQ(prov,2)
+c_LWAB1 = av_LW*IFEQ(prov,2)
+c_SWAB1 = av_SW*IFEQ(prov,2)
+c_LSAB1 = av_LS*IFEQ(prov,2)
+c_SSAB1 = av_SS*IFEQ(prov,2)
+c_NucAB1 = av_Nuc*IFEQ(prov,2)
+c_BioSK1 = av_Bio*IFEQ(prov,3)
+c_CoalSK1 = av_Coal*IFEQ(prov,3)
+c_NGSK1 = av_NG*IFEQ(prov,3)
+c_HydroSK1 = av_Hydro*IFEQ(prov,3)
+c_LWSK1 = av_LW*IFEQ(prov,3)
+c_SWSK1 = av_SW*IFEQ(prov,3)
+c_LSSK1 = av_LS*IFEQ(prov,3)
+c_SSSK1 = av_SS*IFEQ(prov,3)
+c_NucSK1 = av_Nuc*IFEQ(prov,3)
+
+--- weights ---
+weight = weights
+
+--- exclusions ---
+
+$NEST root() Bio Coal NG Hydro LW SW LS SS Nuc
+CHOICE = Recode(d03 Bio,Coal,NG, Hydro, LW, SW, LS, SS, Nuc)
+
+AVAIL(Bio) = IF(av_Bio)
+AVAIL(Coal) = IF(av_Coal)
+AVAIL(NG) = IF(av_NG)
+AVAIL(Hydro) = IF(av_Hydro)
+AVAIL(LW) = IF(av_LW)
+AVAIL(SW) = IF(av_SW)
+AVAIL(LS) = IF(av_LS)
+AVAIL(SS) = IF(av_SS)
+AVAIL(Nuc) = IF(av_Nuc)
+
+--- utility functions ---
+
+U(Bio) = p11*cost_Bio
+   + p12*emit_Bio
+   + p13*dist_Bio
+   + p100*c_BioBC1
+   + p110*c_BioAB1
+   +p120*c_BioSK1
+
+U(Coal) = p11*cost_Coal
+   + p12*emit_Coal
+   + p13*dist_Coal
+   + p200*c_CoalBC1
+   + p210*c_CoalAB1
+   + p220*c_CoalSK1
+
+U(NG) = p11*cost_NG
+   + p12*emit_NG
+   + p13*dist_NG
+   + p300*c_NGBC1
+   + p310*c_NGAB1
+   + p320*c_NGSK1
+
+U(Hydro) = p11*cost_Hydro
+   + p12*emit_Hydro
+   + p13*dist_Hydro
+   + p400*c_HydroBC1
+   + p410*c_HydroAB1
+   + p420*c_HydroSK1
+
+U(LW) = p11*cost_LW
+   + p12*emit_LW
+   + p13*dist_LW
+   + p500*c_LWBC1
+   + p510*c_LWAB1
+   + p520*c_LWSK1
+
+U(SW) = p11*cost_SW
+   + p12*emit_SW
+   + p13*dist_SW
+   + p600*c_SWBC1
+   + p610*c_SWAB1
+   + p620*c_SWSK1
+        
+U(LS) = p11*cost_LS
+   + p12*emit_LS
+   + p13*dist_LS
+   + p700*c_LSBC1
+   + p710*c_LSAB1
+   + p720*c_LSSK1
+
+U(SS) = p11*cost_SS
+   + p12*emit_SS
+   + p13*dist_SS
+   + p800*c_SSBC1
+   + p810*c_SSAB1
+   + p820*c_SSSK1
+
+U(Nuc) = p11*cost_Nuc
+   + p12*emit_Nuc
+   + p13*dist_Nuc
+   + p900*c_NucBC1
+   + p910*c_NucAB1
+   + p920*c_NucSK1

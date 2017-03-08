@@ -1,0 +1,243 @@
+- Define data input
+
+file (name=elec.txt) d1-d3 av_Bio av_Coal av_NG av_Hydro av_LW av_SW av_LS av_SS 
+av_Nuc cost_Bio emit_Bio dist_Bio cost_Coal emit_Coal 
+dist_Coal cost_NG emit_NG dist_NG cost_Hydro emit_Hydro dist_Hydro cost_LW 
+emit_LW dist_LW cost_SW emit_SW dist_SW cost_LS emit_LS dist_LS cost_SS emit_SS 
+dist_SS cost_Nuc emit_Nuc dist_Nuc prov UorR struc no_HH age income enviro_Don 
+prem_Pay poli_Incl poli_Oth weights
+
+$TITLE Alberta Electricity Survey - Function 05
+- Standard logit with grouping by age (<30; 30-49, <=50)
+----------------------------------
+
+--- controls ---
+
+
+--- coefficients ---
+
+$ESTIMATE
+
+   11 cost_YA   F  0.0
+   12 emit_YA  F  0.0
+   13 dist_YA  F  0.0
+   21 cost_MA   F  0.0
+   22 emit_MA  F  0.0
+   23 dist_MA  F  0.0
+   31 cost_SA   F  0.0
+   32 emit_SA  F  0.0
+   33 dist_SA  F  0.0
+   01 c_Bio  F  0.0
+   02 c_Coal  T  0.0
+   03 c_NG  F  0.0
+   04 c_Hydro  F  0.0
+   05 c_LW  F  0.0
+   06 c_SW  F  0.0
+   07 c_LS  F  0.0
+   08 c_SS  F  0.0
+   09 c_Nuc  F  0.0
+
+--- transformations ---
+
+co_BioYA = cost_Bio/10*IFEQ(age,1)
+co_CoalYA = cost_Coal/10*IFEQ(age,1)
+co_NGYA = cost_NG/10*IFEQ(age,1)
+co_HydroYA = cost_Hydro/10*IFEQ(age,1)
+co_LWYA = cost_LW/10*IFEQ(age,1)
+co_SWYA = cost_SW/10*IFEQ(age,1)
+co_LSYA = cost_LS/10*IFEQ(age,1)
+co_SSYA = cost_SS/10*IFEQ(age,1)
+co_NucYA = cost_Nuc/10*IFEQ(age,1)
+co_BioMA = cost_Bio/10*IFGT(age,1)*IFLE(age,3)
+co_CoalMA = cost_Coal/10*IFGT(age,1)*IFLE(age,3)
+co_NGMA = cost_NG/10*IFGT(age,1)*IFLE(age,3)
+co_HydroMA = cost_Hydro/10*IFGT(age,1)*IFLE(age,3)
+co_LWMA = cost_LW/10*IFGT(age,1)*IFLE(age,3)
+co_SWMA = cost_SW/10*IFGT(age,1)*IFLE(age,3)
+co_LSMA = cost_LS/10*IFGT(age,1)*IFLE(age,3)
+co_SSMA = cost_SS/10*IFGT(age,1)*IFLE(age,3)
+co_NucMA = cost_Nuc/10*IFGT(age,1)*IFLE(age,3)
+co_BioSA = cost_Bio/10*IFGT(age,3)*IFLE(age,7)
+co_CoalSA = cost_Coal/10*IFGT(age,3)*IFLE(age,7)
+co_NGSA = cost_NG/10*IFGT(age,3)*IFLE(age,7)
+co_HydroSA = cost_Hydro/10*IFGT(age,3)*IFLE(age,7)
+co_LWSA = cost_LW/10*IFGT(age,3)*IFLE(age,7)
+co_SWSA = cost_SW/10*IFGT(age,3)*IFLE(age,7)
+co_LSSA = cost_LS/10*IFGT(age,3)*IFLE(age,7)
+co_SSSA = cost_SS/10*IFGT(age,3)*IFLE(age,7)
+co_NucSA = cost_Nuc/10*IFGT(age,3)*IFLE(age,7)
+
+em_BioYA = emit_Bio*IFEQ(age,1)
+em_CoalYA = emit_Coal*IFEQ(age,1)
+em_NGYA = emit_NG*IFEQ(age,1)
+em_HydroYA = emit_Hydro*IFEQ(age,1)
+em_LWYA = emit_LW*IFEQ(age,1)
+em_SWYA = emit_SW*IFEQ(age,1)
+em_LSYA = emit_LS*IFEQ(age,1)
+em_SSYA = emit_SS*IFEQ(age,1)
+em_NucYA = emit_Nuc*IFEQ(age,1)
+em_BioMA = emit_Bio*IFGT(age,1)*IFLE(age,3)
+em_CoalMA = emit_Coal*IFGT(age,1)*IFLE(age,3)
+em_NGMA = emit_NG*IFGT(age,1)*IFLE(age,3)
+em_HydroMA = emit_Hydro*IFGT(age,1)*IFLE(age,3)
+em_LWMA = emit_LW*IFGT(age,1)*IFLE(age,3)
+em_SWMA = emit_SW*IFGT(age,1)*IFLE(age,3)
+em_LSMA = emit_LS*IFGT(age,1)*IFLE(age,3)
+em_SSMA = emit_SS*IFGT(age,1)*IFLE(age,3)
+em_NucMA = emit_Nuc*IFGT(age,1)*IFLE(age,3)
+em_BioSA = emit_Bio*IFGT(age,3)*IFLE(age,7)
+em_CoalSA = emit_Coal*IFGT(age,3)*IFLE(age,7)
+em_NGSA = emit_NG*IFGT(age,3)*IFLE(age,7)
+em_HydroSA = emit_Hydro*IFGT(age,3)*IFLE(age,7)
+em_LWSA = emit_LW*IFGT(age,3)*IFLE(age,7)
+em_SWSA = emit_SW*IFGT(age,3)*IFLE(age,7)
+em_LSSA = emit_LS*IFGT(age,3)*IFLE(age,7)
+em_SSSA = emit_SS*IFGT(age,3)*IFLE(age,7)
+em_NucSA = emit_Nuc*IFGT(age,3)*IFLE(age,7)
+
+di_BioYA = dist_Bio/10*IFEQ(age,1)
+di_CoalYA = dist_Coal/10*IFEQ(age,1)
+di_NGYA = dist_NG/10*IFEQ(age,1)
+di_HydroYA = dist_Hydro/10*IFEQ(age,1)
+di_LWYA = dist_LW/10*IFEQ(age,1)
+di_SWYA = dist_SW/10*IFEQ(age,1)
+di_LSYA = dist_LS/10*IFEQ(age,1)
+di_SSYA = dist_SS/10*IFEQ(age,1)
+di_NucYA = dist_Nuc/10*IFEQ(age,1)
+di_BioMA = dist_Bio/10*IFGT(age,1)*IFLE(age,3)
+di_CoalMA = dist_Coal/10*IFGT(age,1)*IFLE(age,3)
+di_NGMA = dist_NG/10*IFGT(age,1)*IFLE(age,3)
+di_HydroMA = dist_Hydro/10*IFGT(age,1)*IFLE(age,3)
+di_LWMA = dist_LW/10*IFGT(age,1)*IFLE(age,3)
+di_SWMA = dist_SW/10*IFGT(age,1)*IFLE(age,3)
+di_LSMA = dist_LS/10*IFGT(age,1)*IFLE(age,3)
+di_SSMA = dist_SS/10*IFGT(age,1)*IFLE(age,3)
+di_NucMA = dist_Nuc/10*IFGT(age,1)*IFLE(age,3)
+di_BioSA = dist_Bio/10*IFGT(age,3)*IFLE(age,7)
+di_CoalSA = dist_Coal/10*IFGT(age,3)*IFLE(age,7)
+di_NGSA = dist_NG/10*IFGT(age,3)*IFLE(age,7)
+di_HydroSA = dist_Hydro/10*IFGT(age,3)*IFLE(age,7)
+di_LWSA = dist_LW/10*IFGT(age,3)*IFLE(age,7)
+di_SWSA = dist_SW/10*IFGT(age,3)*IFLE(age,7)
+di_LSSA = dist_LS/10*IFGT(age,3)*IFLE(age,7)
+di_SSSA = dist_SS/10*IFGT(age,3)*IFLE(age,7)
+di_NucSA = dist_Nuc/10*IFGT(age,3)*IFLE(age,7)
+
+--- weights ---
+weight = weights
+
+--- exclusions ---
+
+$NEST root() Bio Coal NG Hydro LW SW LS SS Nuc
+CHOICE = Recode(d03 Bio,Coal,NG, Hydro, LW, SW, LS, SS, Nuc)
+
+AVAIL(Bio) = IF(av_Bio)
+AVAIL(Coal) = IF(av_Coal)
+AVAIL(NG) = IF(av_NG)
+AVAIL(Hydro) = IF(av_Hydro)
+AVAIL(LW) = IF(av_LW)
+AVAIL(SW) = IF(av_SW)
+AVAIL(LS) = IF(av_LS)
+AVAIL(SS) = IF(av_SS)
+AVAIL(Nuc) = IF(av_Nuc)
+
+--- utility functions ---
+
+U(Bio) = p11*co_BioYA
+   + p12*em_BioYA
+   + p13*di_BioYA
+   + p21*co_BioMA
+   + p22*em_BioMA
+   + p23*di_BioMA
+   + p31*co_BioSA
+   + p32*em_BioSA
+   + p33*di_BioSA
+   + p01
+
+U(Coal) = p11*co_CoalYA
+   + p12*em_CoalYA
+   + p13*di_CoalYA
+   + p21*co_CoalMA
+   + p22*em_CoalMA
+   + p23*di_CoalMA
+   + p31*co_CoalSA
+   + p32*em_CoalSA
+   + p33*di_CoalSA
+   + p02
+
+U(NG) = p11*co_NGYA
+   + p12*em_NGYA
+   + p13*di_NGYA
+   + p21*co_NGMA
+   + p22*em_NGMA
+   + p23*di_NGMA
+   + p31*co_NGSA
+   + p32*em_NGSA
+   + p33*di_NGSA
+   + p03
+
+U(Hydro) = p11*co_HydroYA
+   + p12*em_HydroYA
+   + p13*di_HydroYA
+   + p21*co_HydroMA
+   + p22*em_HydroMA
+   + p23*di_HydroMA
+   + p31*co_HydroSA
+   + p32*em_HydroSA
+   + p33*di_HydroSA
+   + p04
+
+U(LW) = p11*co_LWYA
+   + p12*em_LWYA
+   + p13*di_LWYA
+   + p21*co_LWMA
+   + p22*em_LWMA
+   + p23*di_LWMA
+   + p31*co_LWSA
+   + p32*em_LWSA
+   + p33*di_LWSA
+   + p05
+
+U(SW) = p11*co_SWYA
+   + p12*em_SWYA
+   + p13*di_SWYA
+   + p21*co_SWMA
+   + p22*em_SWMA
+   + p23*di_SWMA
+   + p31*co_SWSA
+   + p32*em_SWSA
+   + p33*di_SWSA
+   + p06
+
+U(LS) = p11*co_LSYA
+   + p12*em_LSYA
+   + p13*di_LSYA
+   + p21*co_LSMA
+   + p22*em_LSMA
+   + p23*di_LSMA
+   + p31*co_LSSA
+   + p32*em_LSSA
+   + p33*di_LSSA
+   + p07
+
+U(SS) = p11*co_SSYA
+   + p12*em_SSYA
+   + p13*di_SSYA
+   + p21*co_SSMA
+   + p22*em_SSMA
+   + p23*di_SSMA
+   + p31*co_SSSA
+   + p32*em_SSSA
+   + p33*di_SSSA
+   + p08
+
+U(Nuc) = p11*co_NucYA
+   + p12*em_NucYA
+   + p13*di_NucYA
+   + p21*co_NucMA
+   + p22*em_NucMA
+   + p23*di_NucMA
+   + p31*co_NucSA
+   + p32*em_NucSA
+   + p33*di_NucSA
+   + p09

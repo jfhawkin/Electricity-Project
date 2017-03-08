@@ -1,0 +1,121 @@
+- Define data input
+
+file (name=elec.txt) d1-d3 av_Bio av_Coal av_NG av_Hydro av_LW av_SW av_LS av_SS 
+av_Nuc cost_Bio emit_Bio dist_Bio cost_Coal emit_Coal 
+dist_Coal cost_NG emit_NG dist_NG cost_Hydro emit_Hydro dist_Hydro cost_LW 
+emit_LW dist_LW cost_SW emit_SW dist_SW cost_LS emit_LS dist_LS cost_SS emit_SS 
+dist_SS cost_Nuc emit_Nuc dist_Nuc prov UorR struc no_HH age income enviro_Don 
+prem_Pay poli_Incl poli_Oth weights
+
+$TITLE Alberta Electricity Survey - Function 02
+- Standard logit with cost and distance scaling (weighted)
+----------------------------------
+
+--- controls ---
+
+
+--- coefficients ---
+
+$ESTIMATE
+
+   11 cost   F  0.0
+   12 emit  F  0.0
+   13 dist  F  0.0
+   01 c_Bio  F  0.0
+   02 c_Coal  T  0.0
+   03 c_NG  F  0.0
+   04 c_Hydro  F  0.0
+   05 c_LW  F  0.0
+   06 c_SW  F  0.0
+   07 c_LS  F  0.0
+   08 c_SS  F  0.0
+   09 c_Nuc  F  0.0
+
+--- transformations ---
+
+cosc_Bio = cost_Bio/10
+cosc_Coal = cost_Coal/10
+cosc_NG = cost_NG/10
+cosc_Hydro = cost_Hydro/10
+cosc_LW = cost_LW/10
+cosc_SW = cost_SW/10
+cosc_LS = cost_LS/10
+cosc_SS = cost_SS/10
+cosc_Nuc = cost_Nuc/10
+
+disc_Bio = dist_Bio/10
+disc_Coal = dist_Coal/10
+disc_NG = dist_NG/10
+disc_Hydro = dist_Hydro/10
+disc_LW = dist_LW/10
+disc_SW = dist_SW/10
+disc_LS = dist_LS/10
+disc_SS = dist_SS/10
+disc_Nuc = dist_Nuc/10
+
+--- weights ---
+weight = weights
+
+--- exclusions ---
+
+$NEST root() Small Large
+$NEST Small(smallC) SW SS
+$NEST Large(largeC) Bio Coal NG Hydro LW LS Nuc
+CHOICE = Recode(d03 Bio,Coal,NG, Hydro, LW, SW, LS, SS, Nuc)
+
+AVAIL(Bio) = IF(av_Bio)
+AVAIL(Coal) = IF(av_Coal)
+AVAIL(NG) = IF(av_NG)
+AVAIL(Hydro) = IF(av_Hydro)
+AVAIL(LW) = IF(av_LW)
+AVAIL(SW) = IF(av_SW)
+AVAIL(LS) = IF(av_LS)
+AVAIL(SS) = IF(av_SS)
+AVAIL(Nuc) = IF(av_Nuc)
+
+--- utility functions ---
+
+U(Bio) = p11*cosc_Bio
+   + p12*emit_Bio
+   + p13*disc_Bio
+   + p01
+
+U(Coal) = p11*cosc_Coal
+   + p12*emit_Coal
+   + p13*disc_Coal
+   + p02
+
+U(NG) = p11*cosc_NG
+   + p12*emit_NG
+   + p13*disc_NG
+   + p03
+
+U(Hydro) = p11*cosc_Hydro
+   + p12*emit_Hydro
+   + p13*disc_Hydro
+   + p04
+
+U(LW) = p11*cosc_LW
+   + p12*emit_LW
+   + p13*disc_LW
+   + p05
+
+U(SW) = p11*cosc_SW
+   + p12*emit_SW
+   + p13*disc_SW
+   + p06
+
+U(LS) = p11*cosc_LS
+   + p12*emit_LS
+   + p13*disc_LS
+   + p07
+
+U(SS) = p11*cosc_SS
+   + p12*emit_SS
+   + p13*disc_SS
+   + p08
+
+U(Nuc) = p11*cosc_Nuc
+   + p12*emit_Nuc
+   + p13*disc_Nuc
+   + p09
